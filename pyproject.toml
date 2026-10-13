@@ -1,0 +1,16 @@
+[project]
+name = "artemis"
+version = "0.0.1"
+description = "Artemis aim-assist ballistic engine (v0)"
+requires-python = ">=3.11"
+dependencies = ["numpy", "matplotlib", "pyyaml"]
+
+[project.optional-dependencies]
+test = ["pytest", "scipy"]
+
+[tool.setuptools]
+packages = ["artemis", "artemis.physics", "artemis.solver"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

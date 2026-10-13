@@ -1,0 +1,41 @@
+active_preset: recurve_30lb
+
+environment:
+  gravity_mps2: 9.81
+  air_density_kgpm3: 1.2
+  wind_mps: [0.0, 0.0, 0.0]     # world frame [x, y, z]; +y blows toward the archer's left
+
+presets:
+  recurve_30lb:
+    # Force-draw curve: what a luggage scale reads at each draw length.
+    # draw_in = distance from grip pivot to string. First point is brace height (string at rest).
+    force_draw:
+      draw_in:  [7.5, 12, 16, 20, 24, 28]
+      force_lb: [0.0, 6.6, 12.4, 18.3, 24.1, 30.0]
+    efficiency: 0.80              # fraction of stored energy that goes into the arrow
+    arrow_mass_kg: 0.020          # ~310 grains
+    arrow_diameter_m: 0.0075      # shaft diameter, used for drag area
+    drag_coefficient: 2.0         # placeholder, tune from real shots later
+    nominal_draw_in: 28
+    launch_height_m: 1.5          # nock height above ground at launch
+
+  toy_suction:
+    # Rough guess for a toy bow with suction-cup arrows. Very uncertain.
+    force_draw:
+      draw_in:  [6, 10, 14, 18, 20]
+      force_lb: [0.0, 2.3, 4.6, 6.9, 8.0]
+    efficiency: 0.40
+    arrow_mass_kg: 0.025
+    arrow_diameter_m: 0.025       # suction cup dominates drag
+    drag_coefficient: 1.0
+    nominal_draw_in: 20
+    launch_height_m: 1.5
+
+solver:
+  dt_s: 0.001                     # integration step
+  pitch_bracket_deg: [-15.0, 45.0]  # low-arc search range
+  tolerance_m: 0.0005             # stop when vertical miss < 0.5 mm
+  max_iterations: 50
+  yaw_passes: 3                   # outer passes correcting yaw for lateral miss (only matters with wind)
+  warm_start_halfwidth_deg: 0.5   # warm start brackets pitch to previous solution +/- this
+  scan_step_deg: 2.5              # coarse scan step used when the top of the bracket falls short
