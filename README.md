@@ -4,6 +4,9 @@ Ballistic engine for the Artemis aim-assist bow: bow model (draw -> launch speed
 3D point-mass arrow flight (gravity, quadratic drag, wind), and an aim solver that
 reports pitch/yaw error from the current aim. See `SPEC.md` for the full design.
 
+- **New here?** Read [docs/HOW_IT_WORKS.md](docs/HOW_IT_WORKS.md) for a plain-language tour of the code.
+- **Got the real bow?** Follow [docs/BOW_CALIBRATION.md](docs/BOW_CALIBRATION.md) to measure it and load it into `config.yaml`.
+
 ## Install
 
 Python 3.11+.
