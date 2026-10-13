@@ -134,3 +134,16 @@ def test_warm_start_falls_back_when_target_jumps(params, v_launch):
     sol = solve_aim(Target(40.0), v_launch, params, warm_start=prev)
     assert sol.converged
     assert sol.pitch_deg == pytest.approx(solve_aim(Target(40.0), v_launch, params).pitch_deg, abs=0.01)
+
+
+def test_warm_start_tracks_sideways_target_motion(params, v_launch):
+    # No wind: the solved yaw is just the bearing, so a warm start after the target slides
+    # sideways should need only one pitch pass (no extra yaw pass).
+    prev = solve_aim(Target(20.0, 0.50, 0.0), v_launch, params)
+    assert prev.yaw_drift_deg == pytest.approx(0.0, abs=1e-12)
+    moved = Target(20.0, 0.52, 0.0)
+    warm = solve_aim(moved, v_launch, params, warm_start=prev)
+    cold = solve_aim(moved, v_launch, params)
+    assert warm.converged
+    assert warm.yaw_deg == pytest.approx(math.degrees(math.atan2(0.52, 20.0)), abs=1e-9)
+    assert warm.iterations < cold.iterations

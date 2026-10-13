@@ -32,6 +32,7 @@ class AimSolution:
     converged: bool
     iterations: int  # number of trajectory simulations used
     reason: str
+    yaw_drift_deg: float = 0.0  # solved yaw minus the geometric bearing to the target (wind correction)
 
 
 @dataclass(frozen=True, eq=False)
@@ -135,18 +136,20 @@ def solve_aim(
     tol = params.solver.tolerance_m
 
     def failed(reason: str, pitch: float = math.nan, yaw: float = math.nan) -> AimSolution:
-        return AimSolution(pitch, yaw, math.nan, math.nan, False, search.sims, reason)
+        return AimSolution(pitch, yaw, math.nan, math.nan, False, search.sims, reason, math.nan)
 
     if target.range_m <= 0.0:
         return failed("target range must be positive")
     if v_launch_mps <= 0.0:
         return failed("launch speed is zero (draw at or below brace height?)")
 
+    bearing_deg = math.degrees(math.atan2(target.lateral_m, target.range_m))
     if warm_start is not None and warm_start.converged:
-        yaw = warm_start.yaw_deg
+        # The target may have moved sideways, so reuse the drift correction, not the raw yaw.
+        yaw = bearing_deg + warm_start.yaw_drift_deg
         guess: float | None = warm_start.pitch_deg
     else:
-        yaw = math.degrees(math.atan2(target.lateral_m, target.range_m))
+        yaw = bearing_deg
         guess = None
 
     passes = max(1, params.solver.yaw_passes)
@@ -166,6 +169,7 @@ def solve_aim(
                 converged=True,
                 iterations=search.sims,
                 reason="",
+                yaw_drift_deg=yaw - bearing_deg,
             )
         if i < passes - 1:
             yaw += math.degrees(math.atan(lateral_miss_m / target.range_m))
