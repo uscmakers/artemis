@@ -23,6 +23,29 @@ pip install numpy matplotlib pyyaml pytest scipy
 python -m pytest
 ```
 
+## Run the explorations
+
+Run from the repo root. Every script takes `--preset <name>` (default: `active_preset`)
+and `--no-show` (save the PNG without opening a window). Plots are saved to `explore/out/`.
+Key results are written up in [explore/FINDINGS.md](explore/FINDINGS.md).
+
+```bash
+python -m explore.trajectories        # side view of arcs, drag vs vacuum, 15 m target
+python -m explore.sight_tape          # required pitch vs range, 3-40 m, plus table
+python -m explore.sensitivity         # impact shift per error source, and an error budget
+python -m explore.monte_carlo         # 2000 noisy-sensor shots on a target face (--range, --shots)
+python -m explore.explorer            # interactive sliders: draw, pitch, yaw, range, wind, Cd
+python -m explore.solver_timing       # solve_aim cold vs warm-start timing (--n)
+```
+
+For example, compare the suction-cup setup:
+
+```bash
+python -m explore.sight_tape --preset toy_suction
+```
+
+Sensor noise levels for the Monte Carlo are constants at the top of `explore/monte_carlo.py`.
+
 ## Layout
 
 ```
