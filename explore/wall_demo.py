@@ -37,7 +37,7 @@ from artemis.solver.draw import solve_draw
 from explore._common import finish, parse_args
 from explore.explorer import THEMES, apply_theme, preset_label
 
-DISTANCE_LIMITS_M = (0.1, 6.0)  # VL53L4CX: ~1.3 m with the L4CD driver, ~6 m with the full one
+DISTANCE_LIMITS_M = (0.1, 10.0)  # bow max range for the demo; the VL53L4CX itself reads ~1.3 m (L4CD driver) to ~6 m
 DEFAULT_DISTANCE_M = 1.0
 ANGLE_LIMITS_DEG = (-5.0, 30.0)
 DEFAULT_ANGLE_DEG = 2.0
