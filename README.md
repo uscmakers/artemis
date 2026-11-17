@@ -37,7 +37,7 @@ python -m explore.trajectories        # side view of arcs, drag vs vacuum, 15 m 
 python -m explore.sight_tape          # required pitch vs range, 3-40 m, plus table
 python -m explore.sensitivity         # impact shift per error source, and an error budget
 python -m explore.monte_carlo         # 2000 noisy-sensor shots on a target face (--range, --shots)
-python -m explore.explorer            # interactive sliders: draw, pitch, yaw, range, wind, Cd
+python -m explore.explorer            # interactive aim cue + sliders (--light for projectors; arrow keys nudge, space snaps)
 python -m explore.solver_timing       # solve_aim cold vs warm-start timing (--n)
 ```
 
