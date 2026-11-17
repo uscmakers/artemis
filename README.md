@@ -41,6 +41,21 @@ python -m explore.explorer            # interactive aim cue + sliders (--dark fo
 python -m explore.solver_timing       # solve_aim cold vs warm-start timing (--n)
 ```
 
+### Wall demo (ToF sensor MVP)
+
+The ToF sensor's distance to the wall sets how far to pull back. A model bow shows the draw,
+the string force, and the flight to a mark on the wall level with the nock.
+
+```bash
+python -m explore.wall_demo             # auto-detects a sensor board on USB; otherwise drag the slider
+python -m explore.wall_demo --fake      # simulated sensor, to try it without hardware
+ssh pi@raspberrypi.local "python3 -u ~/artemis/sensor_testing/tof_sensor_testing/tof_distance_pi.py" | python -m explore.wall_demo --stdin
+```
+
+It reads the same lines the sensor sketches print (`Distance: 1234 mm`, `1234 mm  status=0`,
+`Out of range`). Set `sensors.tof_to_nock_m` in `config.yaml` to the distance from the sensor
+face back to the nock. Serial needs `pip install pyserial`.
+
 For example, compare the suction-cup setup:
 
 ```bash
