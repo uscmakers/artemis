@@ -89,6 +89,13 @@ class SolverParams:
     scan_step_deg: float
 
 
+@dataclass(frozen=True)
+class SensorParams:
+    tof_to_nock_m: float = 0.0
+    tof_smoothing_samples: int = 5
+    tof_stale_s: float = 1.0
+
+
 @dataclass(frozen=True, eq=False)
 class Params:
     """Everything the engine needs for one preset."""
@@ -97,6 +104,7 @@ class Params:
     bow: BowParams
     flight: FlightParams
     solver: SolverParams
+    sensors: SensorParams = SensorParams()
 
     def with_flight(self, **changes) -> Params:
         """Copy with flight fields replaced, e.g. params.with_flight(drag=False, wind_mps=(0, 2, 0))."""
@@ -163,4 +171,10 @@ def load_config(path: str | Path | None = None, preset: str | None = None) -> Pa
         warm_start_halfwidth_deg=float(s["warm_start_halfwidth_deg"]),
         scan_step_deg=float(s["scan_step_deg"]),
     )
-    return Params(preset_name=name, bow=bow, flight=flight, solver=solver)
+    sens = raw.get("sensors") or {}
+    sensors = SensorParams(
+        tof_to_nock_m=float(sens.get("tof_to_nock_m", 0.0)),
+        tof_smoothing_samples=int(sens.get("tof_smoothing_samples", 5)),
+        tof_stale_s=float(sens.get("tof_stale_s", 1.0)),
+    )
+    return Params(preset_name=name, bow=bow, flight=flight, solver=solver, sensors=sensors)

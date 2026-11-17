@@ -9,7 +9,7 @@ dependencies = ["numpy", "matplotlib", "pyyaml"]
 test = ["pytest", "scipy"]
 
 [tool.setuptools]
-packages = ["artemis", "artemis.physics", "artemis.solver"]
+packages = ["artemis", "artemis.io", "artemis.physics", "artemis.solver"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

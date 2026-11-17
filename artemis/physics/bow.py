@@ -37,6 +37,13 @@ def stored_energy_j(draw_m: float, curve: ForceDrawCurve) -> float:
     return float(np.sum(0.5 * (f[1:] + f[:-1]) * np.diff(d)))
 
 
+def draw_force_n(draw_m: float, curve: ForceDrawCurve) -> float:
+    """String force at `draw_m`, read off the table (0 below brace, last point past the end)."""
+    if draw_m <= curve.brace_m:
+        return 0.0
+    return float(np.interp(draw_m, curve.draw_m, curve.force_n))
+
+
 def launch_speed_mps(draw_m: float, bow: BowParams) -> float:
     """v = sqrt(2 * efficiency * E / m)."""
     energy_j = stored_energy_j(draw_m, bow.curve)

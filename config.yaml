@@ -39,3 +39,9 @@ solver:
   yaw_passes: 3                   # outer passes correcting yaw for lateral miss (only matters with wind)
   warm_start_halfwidth_deg: 0.5   # warm start brackets pitch to previous solution +/- this
   scan_step_deg: 2.5              # coarse scan step used when the top of the bracket falls short
+
+sensors:
+  # ToF rangefinder (VL53L4CX). Its reading is the distance from the sensor face to the wall.
+  tof_to_nock_m: 0.0              # add to the ToF reading to get nock-to-wall distance (sensor ahead of the nock = positive)
+  tof_smoothing_samples: 5        # median of the last N readings, to steady a jittery sensor
+  tof_stale_s: 1.0                # treat the sensor as silent after this long without a reading
